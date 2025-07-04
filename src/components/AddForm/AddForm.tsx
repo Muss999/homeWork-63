@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { TypePost } from "../../helpers/types";
 import axiosApi from "../../axiosApi";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Spinner from "../Spinner/Spinner";
 
 const AddForm = () => {
     const navigate = useNavigate();
+    const params = useParams();
 
     const [error, setError] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -14,6 +15,25 @@ const AddForm = () => {
         description: "",
         date: "",
     });
+
+    useEffect(() => {
+        const fetchData = async () => {
+            if (!params.id) return;
+            try {
+                const { data } = await axiosApi.get(`/posts/${params.id}.json`);
+                if (data) {
+                    setAddPost(data);
+                } else {
+                    setError(true);
+                }
+            } catch {
+                setError(true);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchData();
+    }, []);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -31,7 +51,11 @@ const AddForm = () => {
 
         setLoading(true);
         try {
-            await axiosApi.post("/posts.json", newPost);
+            if (params.id) {
+                await axiosApi.put(`/posts/${params.id}.json`, newPost);
+            } else {
+                await axiosApi.post("/posts.json", newPost);
+            }
             navigate("/");
         } catch {
             setError(true);
@@ -49,7 +73,7 @@ const AddForm = () => {
 
     return (
         <>
-            <h2>Форма создания поста</h2>
+            <h2>Форма поста</h2>
             <form className="container mt-4" onSubmit={handleSubmit}>
                 <div className="mb-3">
                     <label htmlFor="postTitle" className="form-label">
@@ -88,7 +112,7 @@ const AddForm = () => {
                 </div>
 
                 <button type="submit" className="btn btn-success">
-                    Добавить пост
+                    {params.id ? "Сохранить изменения" : "Добавить пост"}
                 </button>
             </form>
         </>
