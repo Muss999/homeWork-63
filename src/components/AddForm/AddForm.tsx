@@ -1,12 +1,12 @@
 import { useState } from "react";
-import type { TypeAddPost } from "../../helpers/types";
+import type { TypePost } from "../../helpers/types";
 import axiosApi from "../../axiosApi";
 import { useNavigate } from "react-router-dom";
 
 const AddForm = () => {
     const navigate = useNavigate();
 
-    const [addPost, setAddPost] = useState<TypeAddPost>({
+    const [addPost, setAddPost] = useState<TypePost>({
         name: "",
         description: "",
         date: "",

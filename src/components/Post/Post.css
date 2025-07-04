@@ -1,0 +1,8 @@
+.Post-card {
+    border: 1px solid black;
+}
+.Post__bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

@@ -15,9 +15,10 @@ const App = () => {
                     {["/", "/posts"].map((path) => (
                         <Route path={path} element={<Home />} />
                     ))}
-                    <Route path="/add-post" element={<AddForm />} />
+                    <Route path="/posts/add" element={<AddForm />} />
                     <Route path="/about" element={<About />} />
                     <Route path="/contacts" element={<Contacts />} />
+                    <Route path="*" element={<h1>Not Found</h1>} />
                 </Routes>
             </div>
         </>
