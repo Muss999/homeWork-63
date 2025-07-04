@@ -2,10 +2,13 @@ import { useState } from "react";
 import type { TypePost } from "../../helpers/types";
 import axiosApi from "../../axiosApi";
 import { useNavigate } from "react-router-dom";
+import Spinner from "../Spinner/Spinner";
 
 const AddForm = () => {
     const navigate = useNavigate();
 
+    const [error, setError] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [addPost, setAddPost] = useState<TypePost>({
         name: "",
         description: "",
@@ -26,12 +29,23 @@ const AddForm = () => {
             return;
         }
 
+        setLoading(true);
         try {
             await axiosApi.post("/posts.json", newPost);
-        } finally {
             navigate("/");
+        } catch {
+            setError(true);
+        } finally {
+            setLoading(false);
         }
     };
+
+    if (loading) {
+        return <Spinner />;
+    }
+    if (error) {
+        return <p>Произошла ошибка</p>;
+    }
 
     return (
         <>
