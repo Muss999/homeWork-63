@@ -1,5 +1,2 @@
-export const formatDate = (isoDate: string) => {
-    const date = new Date(isoDate);
-    const formattedDate = date.toLocaleString("ru-RU");
-    return formattedDate;
-};
+export const formatDate = (isoDate: string) =>
+    new Date(isoDate).toLocaleString("ru-RU");

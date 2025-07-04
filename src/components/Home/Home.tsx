@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { TypePostsList } from "../../helpers/types";
+import type {TypePostMutation, TypePostsList} from "../../helpers/types";
 import axiosApi from "../../axiosApi";
 import Post from "../Post/Post";
 import "./Home.css";
@@ -34,7 +34,7 @@ const Home = () => {
         return <p>Постов нет</p>;
     }
 
-    const postsArr = [];
+    const postsArr: TypePostMutation[] = [];
     for (const post in posts) {
         const newPost = { ...posts[post], id: post };
         postsArr.push(newPost);

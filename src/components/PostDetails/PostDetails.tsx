@@ -28,7 +28,7 @@ const PostDetails = () => {
             }
         };
         fetchData();
-    }, []);
+    }, [params.id]);
 
     const deletePost = async () => {
         try {

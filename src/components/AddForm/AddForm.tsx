@@ -17,26 +17,34 @@ const AddForm = () => {
     });
 
     useEffect(() => {
-        const fetchData = async () => {
-            if (!params.id) return;
-            try {
-                const { data } = await axiosApi.get(`/posts/${params.id}.json`);
-                if (data) {
-                    setAddPost(data);
-                } else {
+        if (params.id) {
+            const fetchData = async () => {
+                try {
+                    const { data } = await axiosApi.get(
+                        `/posts/${params.id}.json`
+                    );
+                    if (data) {
+                        setAddPost(data);
+                    } else {
+                        setError(true);
+                    }
+                } catch {
                     setError(true);
+                } finally {
+                    setLoading(false);
                 }
-            } catch {
-                setError(true);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchData();
-    }, []);
+            };
+            fetchData();
+        } else {
+            setAddPost({ name: "", description: "", date: "" });
+            setError(false);
+            setLoading(false);
+        }
+    }, [params.id]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setError(false);
 
         const newPost = {
             name: addPost.name.trim(),
